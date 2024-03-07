@@ -38,14 +38,14 @@ router.get("/trainers", async (_req, res, next) => {
 router.post("/trainer", async (req, res, next) => {
   try {
     // TODO: リクエストボディにトレーナー名が含まれていなければ400を返す    
-    if (!req.body.name || req.body.name.trim().length === 0)
-      return res.status(400).send('No trainer name given.');
+    if (!("name" in req.body && req.body.name.length > 0))
+      return res.sendStatus(400).send('No trainer name given.');
 
     // TODO: すでにトレーナー（S3 オブジェクト）が存在していれば409を返す
     const trainers = await findTrainers();
     const trainerExists = trainers.some(({ Key }) => Key === `${req.body.name}.json`);
     if (trainerExists) {
-      return res.status(409).send('Trainer already exists.');
+      return res.sendStatus(409).send('Trainer already exists.');
     }
     const result = await upsertTrainer(req.body.name, req.body);
     res.status(result["$metadata"].httpStatusCode).send(result);
@@ -75,7 +75,7 @@ router.post("/trainer/:trainerName", async (req, res, next) => {
         const trainerExists = trainers.some(({ Key }) => Key === `${trainerName}.json`);
 
         if (!trainerExists) {
-          return res.status(404).send('Trainer not found.');
+          return res.sendStatus(404).send('Trainer not found.');
         }
       
         const result = await upsertTrainer(trainerName, req.body);
@@ -105,9 +105,8 @@ router.post("/trainer/:trainerName/pokemon", async (req, res, next) => {
     console.log(req.body)
     const { trainerName } = req.params;    
     // TODO: リクエストボディにポケモン名が含まれていなければ400を返す
-    if (!req.body.name || req.body.name.trim().length === 0) {
-      return res.status(400).send('No Pokémon name given.');
-    }
+    if (!("name" in req.body && req.body.name.length > 0))
+      return res.sendStatus(400).send('No Pokémon name given.');
 
     const pokemon = await findPokemon(req.body.name);
 
@@ -129,8 +128,8 @@ router.post("/trainer/:trainerName/pokemon", async (req, res, next) => {
 
     trainer.pokemons.push(newPokemon);
 
-    const result = await upsertTrainer(trainerName, { pokemons: [pokemon] });
-    //const result = await upsertTrainer(trainerName, trainer);
+    //const result = await upsertTrainer(trainerName, { pokemons: [pokemon] });
+    const result = await upsertTrainer(trainerName, trainer);
     res.status(result["$metadata"].httpStatusCode).send(result);
   } catch (err) {
     console.log("err /pokemon");
