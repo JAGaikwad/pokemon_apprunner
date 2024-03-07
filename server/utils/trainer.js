@@ -11,6 +11,14 @@ const streamToString = (stream) =>
     stream.on("end", () => resolve(Buffer.concat(chunks).toString("utf8")));
   });
 
+  /** トレーナーの一覧の取得 Trial **/
+/*
+export const findTrainers = async () => {
+  const trainers = ["trainer1","trainer2","trainer3","trainer4"];
+  return trainers;   
+};
+*/
+
 /** トレーナーの一覧の取得 */
 export const findTrainers = async () => {
   const objects = await s3Client.send(
