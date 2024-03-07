@@ -1,4 +1,4 @@
-import { ListObjectsCommand, PutObjectCommand, GetObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
+import { ListObjectsCommand, PutObjectCommand, GetObjectCommand, DeleteObjectCommand, } from "@aws-sdk/client-s3";
 import s3Client from "./s3Client";
 
 const config = useRuntimeConfig();

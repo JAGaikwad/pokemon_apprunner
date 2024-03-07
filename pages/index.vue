@@ -2,7 +2,6 @@
 const { data: trainers } = await useTrainers();
 </script>
 
-
 <template>
   <div>
     <h1>ポケットモンスター</h1>

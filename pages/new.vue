@@ -24,11 +24,13 @@ const { dialog, onOpen, onClose } = useDialog();
 <template>
   <div>
     <h1>あたらしくはじめる</h1>
-    <p>はじめにきみのなまえをおしえてもらおう！</p>
+    <p>では はじめに きみの なまえを おしえて もらおう！</p>
     <form @submit.prevent>
       <div class="item">
         <label for="name">なまえ</label>
-        <span id="name-description">とくていのもじはとりのぞかれるぞ！</span>
+        <span id="name-description"
+          >とくていの もじは とりのぞかれるぞ！</span
+        >
         <input
           id="name"
           v-model="trainerName"
@@ -36,16 +38,18 @@ const { dialog, onOpen, onClose } = useDialog();
           @keydown.enter="valid && onOpen(true)"
         />
       </div>
-      <GamifyButton type="button" :disabled="!valid" @click="onOpen(true)">けってい</GamifyButton>
+      <GamifyButton type="button" :disabled="!valid" @click="onOpen(true)"
+        >けってい</GamifyButton
+      >
     </form>
     <GamifyDialog
       v-if="dialog"
       id="confirm-submit"
       title="かくにん"
-      :description="`きみは${safeTrainerName}というんだな！`"
+      :description="`ふむ!!! きみは ${safeTrainerName} と いうんだな！`"
       @close="onClose"
     >
-    <GamifyList :border="false" direction="horizon">
+      <GamifyList :border="false" direction="horizon">
         <GamifyItem>
           <GamifyButton @click="onClose">いいえ</GamifyButton>
         </GamifyItem>
@@ -54,7 +58,6 @@ const { dialog, onOpen, onClose } = useDialog();
         </GamifyItem>
       </GamifyList>
     </GamifyDialog>
-    
   </div>
 </template>
 
